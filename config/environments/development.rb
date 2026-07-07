@@ -54,4 +54,10 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Store uploaded files on iDrive E2 (S3-compatible).
+  config.active_storage.service = :amazon
+
+  # Allow Coder proxy host.
+  config.hosts.clear
 end
