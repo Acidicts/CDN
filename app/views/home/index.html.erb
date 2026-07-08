@@ -1,2 +1,200 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reach CDN</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <% content_for :stylesheet do %>
+        <%= stylesheet_link_tag "pages/home.css" %>
+    <% end %>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><span class="logo-mark"></span>reach<span style="color:var(--text-muted)">cdn</span></div>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#status">Status</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost">Docs</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>A free mirror for<br><span class="accent">open-source files.</span></h1>
+      <p class="hero-sub">Reach hosts open-source libraries and public assets across 41 edge nodes. No account, no tracking, no cost.</p>
+      <div class="hero-ctas">
+        <a href="#how" class="btn btn-ghost">See how it works</a>
+      </div>
+    </div>
+
+    <div class="stream-card">
+      <canvas id="stream" aria-label="Animation of data packets streaming outward across the network"></canvas>
+      <div class="stream-caption">
+        <span>1 server</span>
+        <span><strong>Unlimited</strong> proxies by you</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How it works</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Find your package</h3>
+        <p>Search npm, GitHub releases, or any registry we mirror.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Copy the link</h3>
+        <p>Every file gets a stable, versioned URL.</p>
+        <pre>cdn.reach.sh/preact@10.19/dist/preact.min.js</pre>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Use it</h3>
+        <p>Script tag, import map, or curl. It's just a file.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="status">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Status</h2>
+    </div>
+    <div class="status-card">
+      <div class="status-left">
+        <span class="status-dot"></span>
+        <span class="status-text"><strong>All systems operational</strong></span>
+      </div>
+      <div class="status-regions">
+        <span>eu-west <span>●</span></span>
+        <span>us-east <span>●</span></span>
+        <span>ap-south <span>●</span></span>
+        <span>sa-east <span>●</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        Community-run mirror for open-source assets.
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Project</h4>
+          <a href="#">Source</a>
+          <a href="#">Report abuse</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var canvas = document.getElementById('stream');
+  var ctx = canvas.getContext('2d');
+  var card = canvas.parentElement;
+  var W, H, cx, cy;
+  var purple400 = '#7F77DD', purple800 = '#3C3489', teal200 = '#5DCAA5';
+
+  function resize(){
+    var rect = card.getBoundingClientRect();
+    W = canvas.width = rect.width;
+    H = canvas.height = rect.height;
+    cx = W / 2; cy = H / 2;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var packets = [];
+  function spawn(){
+    var angle = Math.random() * Math.PI * 2;
+    var speed = 0.6 + Math.random() * 0.6;
+    packets.push({
+      angle: angle,
+      radius: 0,
+      speed: speed,
+      maxRadius: Math.min(W, H) * (0.35 + Math.random() * 0.15),
+      hit: false
+    });
+  }
+  for (var i = 0; i < 14; i++) spawn();
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var t = 0;
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    var coreR = 5 + Math.sin(t * 0.05) * 1.2;
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, coreR, 0, Math.PI * 2);
+    ctx.fillStyle = purple400;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, coreR + 6 + Math.sin(t * 0.05) * 1.2, 0, Math.PI * 2);
+    ctx.strokeStyle = purple800;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    for (var i = 0; i < packets.length; i++){
+      var p = packets[i];
+      if (!reduceMotion) p.radius += p.speed;
+      var x = cx + Math.cos(p.angle) * p.radius;
+      var y = cy + Math.sin(p.angle) * p.radius;
+      var fade = 1 - (p.radius / p.maxRadius);
+      if (fade < 0) fade = 0;
+
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(p.angle) * Math.max(0, p.radius - 14), cy + Math.sin(p.angle) * Math.max(0, p.radius - 14));
+      ctx.lineTo(x, y);
+      ctx.strokeStyle = 'rgba(127,119,221,' + (fade * 0.5) + ')';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = p.hit ? teal200 : purple400;
+      ctx.globalAlpha = fade;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      if (p.radius >= p.maxRadius){
+        p.angle = Math.random() * Math.PI * 2;
+        p.radius = 0;
+        p.speed = 0.6 + Math.random() * 0.6;
+        p.maxRadius = Math.min(W, H) * (0.35 + Math.random() * 0.15);
+      }
+    }
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
