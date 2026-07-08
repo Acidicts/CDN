@@ -12,6 +12,9 @@ gem "puma", ">= 5.0"
 # Use Active Storage with S3-compatible storage (iDrive E2)
 gem "aws-sdk-s3", require: false
 
+# IP geolocation for region assignment
+gem "geocoder"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

@@ -56,14 +56,14 @@
     <div class="steps">
       <div class="step">
         <div class="step-num">01</div>
-        <h3>Find your package</h3>
-        <p>Search npm, GitHub releases, or any registry we mirror.</p>
+        <h3>Upload Your files</h3>
+        <p>Upload many files and preview them or render in your own websites.</p>
       </div>
       <div class="step">
         <div class="step-num">02</div>
         <h3>Copy the link</h3>
         <p>Every file gets a stable, versioned URL.</p>
-        <pre>cdn.reach.sh/preact@10.19/dist/preact.min.js</pre>
+        <pre>cdn.bing-bong.uk/hackclub/Acidicts/banner.png</pre>
       </div>
       <div class="step">
         <div class="step-num">03</div>
@@ -86,10 +86,10 @@
       </div>
       <div class="group-status">
         <div class="status-regions">
-          <span>eu-west <span class="stat-dot">●</span></span>
-          <span class="inactive">us-east <span class="stat-dot">●</span></span>
-          <span class="inactive">ap-south <span class="stat-dot">●</span></span>
-          <span class="inactive">sa-east <span class="stat-dot">●</span></span>
+          <span class="<%= "inactive" if !@servers["eu_west"] %>">eu-west <span class="stat-dot">●</span></span>
+          <span class="<%= "inactive" if !@servers["us_east"] %>">us-east <span class="stat-dot">●</span></span>
+          <span class="<%= "inactive" if !@servers["ap-south"] %>">ap-south <span class="stat-dot">●</span></span>
+          <span class="<%= "inactive" if !@servers["sa-east"] %>">sa-east <span class="stat-dot">●</span></span>
         </div>
         <span class="group-status-message op75">No issues just no servers</span>
       </div>
@@ -101,7 +101,7 @@
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-about">
-        Community-run mirror for open-source assets.
+        Community-run cdn for open-source assets.
       </div>
       <div class="footer-links">
         <div class="footer-col">
