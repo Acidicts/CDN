@@ -13,7 +13,10 @@
 class Server < ApplicationRecord
   has_one :edge
 
-  before_create :set_region
+  after_create :set_region
+
+  attribute :requests, :integer, default: 0
+  attribute :domain, :string, default: ""
 
   enum :region, {
     "us_east": 0,
@@ -27,9 +30,13 @@ class Server < ApplicationRecord
   }
 
   def self.create_find_self
-    find_or_create_by!(self: true) do |server|
-      server.domain = ENV["APP_URL"]
+    server = find_or_create_by!(self: true)
+    if server.domain.blank?
+      url = ENV["APP_URL"] || "https://#{Socket.gethostname}"
+      server.update!(domain: url)
     end
+    server.set_region
+    server
   end
 
   def set_region
@@ -43,6 +50,7 @@ class Server < ApplicationRecord
     save! if persisted?
   rescue StandardError
     self.region ||= :us_east
+    save! if persisted?
   end
 
   private
