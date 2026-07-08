@@ -10,13 +10,14 @@
 
     <% content_for :stylesheet do %>
         <%= stylesheet_link_tag "pages/home.css" %>
+        <%= stylesheet_link_tag "components/general.css" %>
     <% end %>
 </head>
 <body>
 
 <nav>
   <div class="wrap">
-    <div class="logo"><span class="logo-mark"></span>reach<span style="color:var(--text-muted)">cdn</span></div>
+    <div class="logo"><span class="logo-mark"></span>railbeam<span style="color:var(--text-muted)">cdn</span></div>
     <div class="nav-links">
       <a href="#how">How it works</a>
       <a href="#status">Status</a>
@@ -83,11 +84,14 @@
         <span class="status-dot"></span>
         <span class="status-text"><strong>All systems operational</strong></span>
       </div>
-      <div class="status-regions">
-        <span>eu-west <span>●</span></span>
-        <span>us-east <span>●</span></span>
-        <span>ap-south <span>●</span></span>
-        <span>sa-east <span>●</span></span>
+      <div class="group-status">
+        <div class="status-regions">
+          <span>eu-west <span class="stat-dot">●</span></span>
+          <span class="inactive">us-east <span class="stat-dot">●</span></span>
+          <span class="inactive">ap-south <span class="stat-dot">●</span></span>
+          <span class="inactive">sa-east <span class="stat-dot">●</span></span>
+        </div>
+        <span class="group-status-message op75">No issues just no servers</span>
       </div>
     </div>
   </div>

@@ -235,7 +235,20 @@ h2 {
 }
 
 /* ---------- status ---------- */
+.group-status {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+.group-status-message {
+  color: var(--text-muted);
+  font-size: 0.75em;
+  position: absolute;
+  bottom: 24px;
+  right: 28px;
+}
 .status-card {
+  position: relative;
   background: var(--surface-1);
   border: 0.5px solid var(--border);
   border-radius: 12px;
@@ -265,6 +278,12 @@ h2 {
   border-radius: 50%;
   background: var(--teal-200);
   animation: pulse-dot 2s ease-out infinite;
+}
+.inactive {
+  color: grey !important;
+}
+.status-regions .inactive span {
+  color: grey;
 }
 @keyframes pulse-dot {
   0% {
