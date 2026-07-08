@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_08_211059) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_08_213923) do
+  create_table "edges", force: :cascade do |t|
+    t.string "api_key_digest"
+    t.string "base_url"
+    t.json "capabilities", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "last_seen_at"
+    t.string "name"
+    t.integer "server_id", null: false
+    t.string "status", default: "pending"
+    t.datetime "updated_at", null: false
+    t.index ["server_id"], name: "index_edges_on_server_id"
+  end
+
   create_table "servers", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "domain"
@@ -19,4 +32,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_08_211059) do
     t.boolean "self"
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "edges", "servers"
 end

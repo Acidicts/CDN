@@ -11,6 +11,8 @@
 #
 
 class Server < ApplicationRecord
+  has_one :edge
+
   before_create :set_region
 
   enum :region, {
